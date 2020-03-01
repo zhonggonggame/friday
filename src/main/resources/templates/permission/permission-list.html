@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>权限列表</title>
+    <header th:replace="header::html"></header>
+</head>
+
+<body class="">
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">权限</a>
+        <a><cite>菜单列表</cite></a>
+      </span>
+</div>
+<div class="x-body">
+    <div class="layui-fluid">
+        <div class="layui-row  layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        <form class="layui-form layui-col-md12 x-so" id="layuiFormPermission">
+                            <a class="layui-btn" onclick="xadmin.open('新增菜单','/permission/add')"><i class="layui-icon"></i>新增</a>
+                        </form>
+                    </div>
+                    <div class="layui-card-body ">
+                        <table class="layui-hide" id="menuTable" lay-filter="menuTable"></table>
+                    </div>
+                 <div class="layui-card-body ">
+                        <script type="text/html" id="barDemo" >
+                            <a class="layui-btn layui-btn-xs" lay-event="edit" permission="sys:menu:edit">编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" permission="sys:menu:del">删除</a>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('table',function () {
+        var table=layui.table;
+        //表格渲染
+        table.render({
+          elem:'#menuTable',
+          method:'get',
+          page:true,
+          url:'/permission/Navigation',
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.datas //解析数据列表
+                };
+            },
+          cols:[
+              [
+                  {type: 'numbers',title:'序号'},
+                  {field: 'name',width:180, title: '名称'},
+                  {field: 'href',width:160, title: 'url'},
+                  {field: 'sort',width:60, title: '排序'},
+                  {field:'permission',title:'资源标识'},
+                  {field:'type',width:60,title:'类型'},
+                  {title:'操作',toolbar:'#barDemo'}
+              ]
+          ]
+
+        });
+        //工具栏监听
+        table.on('tool(menuTable)',function (obj) {
+            var data = obj.data;
+            if (obj.event=='del'){
+                layer.confirm('真的要删除吗？',function (index) {
+                    $.ajax({
+                        url: "/permission/delete",
+                        type: "GET",
+                        data: {id: data.id},
+                        dataType: 'json',
+                        success:function (data) {
+                            obj.del();
+                            layer.close(index);
+                            layer.alert("删除成功");
+                        },
+                    })
+                })
+            }else if(obj.event=='edit') {
+                  xadmin.open('编辑菜单信息','/permission/edit/?id=' + data.id);
+            };
+        });
+    });
+</script>
+</body>
+</html>
