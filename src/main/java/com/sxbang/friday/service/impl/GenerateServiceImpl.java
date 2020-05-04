@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -108,7 +109,7 @@ public class GenerateServiceImpl implements GenerateService {
 		List  tablesList=new ArrayList();
 		String sql="select table_name " +
 				" from information_schema.tables" +
-				" where table_schema='sxb-base' ";
+				" where table_schema='c2c' ";
         tablesList= jdbcTemplate.queryForList(sql);
 		return tablesList;
 	}

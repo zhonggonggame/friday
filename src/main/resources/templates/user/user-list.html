@@ -45,6 +45,13 @@
                                 <a class="layui-btn layui-btn-xs" lay-event="edit" >编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                             </script>
+                            <script type="text/html" id="buttonTpl">
+                                {{#  if(d.status == 1){ }}
+                                <input type="checkbox" uid={{d.id}} name="switch" lay-filter="switch" lay-skin="switch" checked lay-text="启用|禁用">
+                                {{#  } else { }}
+                                <input type="checkbox" uid={{d.id}} name="switch" lay-filter="switch" lay-skin="switch" lay-text="启用|禁用">
+                                {{#  } }}
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -68,9 +75,7 @@
                         ,{field: 'id', title: 'ID', align:'center', width:50}
                         ,{field: 'username', title: '用户名'}
                         ,{field: 'telephone', title: '手机'}
-                        ,{field: 'status', title: '状态',  templet:function(d){
-                            return  d.status == '1' ? "启动":"禁用";
-                        }}
+                        ,{field: 'status', title:'状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
                         ,{field: 'birthday', title: '生日'}
                         ,{title:'操作', toolbar: '#barDemo' }
                     ]

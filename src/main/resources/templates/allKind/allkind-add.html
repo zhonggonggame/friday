@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>新增用户信息</title>
+    <header th:replace="header::html"></header>
+</head>
+
+<body>
+<div class="x-body">
+    <form class="layui-form">
+
+        <div class="layui-form-item">
+            <label for="L_name" class="layui-form-label">
+                <span class="x-red">*</span>商品类名
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_name" name="name" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_date" class="layui-form-label">
+                <span class="x-red">*</span>时间
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_date" name="modified" lay-verify="required" autocomplete="off" class="layui-input" placeholder="yyyy-MM-dd HH:mm:ss">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="add" lay-submit="">
+                增加
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+
+    layui.use(['form','layer', 'laydate'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer
+            ,laydate = layui.laydate;
+        //日期
+        laydate.render({
+            elem: '#L_date'
+            ,type: 'datetime'
+        });
+        //监听提交
+        form.on('submit(add)', function(data){
+            $.ajax({
+                url:"/allkinds/add",
+                type:"POST",
+                data:data.field,
+                dataType:'json',
+                success:function(result){
+                    if(result.code == 500 || result.code == 5000100 || result.code == 5000101 || result.code == 5000102){
+                        layer.alert(result.msg);
+                    }else{
+                        layer.alert("设置成功", {icon: 6},function () {
+                            //关闭当前frame
+                            xadmin.close();
+                            // 可以对父窗口进行刷新
+                            xadmin.father_reload();
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

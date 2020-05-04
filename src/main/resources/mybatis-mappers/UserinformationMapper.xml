@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxbang.friday.dao.UserinformationDao">
+
+	<sql id="where">
+		<where>
+			<if test="params != null">
+							<if test="params.id != null and params.id != ''">
+				and id = #{params.id} 
+			</if>
+			<if test="params.modified != null and params.modified != ''">
+				and modified = #{params.modified} 
+			</if>
+			<if test="params.username != null and params.username != ''">
+				and username = #{params.username} 
+			</if>
+			<if test="params.phone != null and params.phone != ''">
+				and phone = #{params.phone} 
+			</if>
+			<if test="params.realname != null and params.realname != ''">
+				and realname = #{params.realname} 
+			</if>
+			<if test="params.clazz != null and params.clazz != ''">
+				and clazz = #{params.clazz} 
+			</if>
+			<if test="params.sno != null and params.sno != ''">
+				and sno = #{params.sno} 
+			</if>
+			<if test="params.dormitory != null and params.dormitory != ''">
+				and dormitory = #{params.dormitory} 
+			</if>
+			<if test="params.gender != null and params.gender != ''">
+				and gender = #{params.gender} 
+			</if>
+			<if test="params.createtime != null and params.createtime != ''">
+				and createtime = #{params.createtime} 
+			</if>
+			<if test="params.avatar != null and params.avatar != ''">
+				and avatar = #{params.avatar} 
+			</if>
+
+			</if>
+		</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		select count(1) from userinformation t
+	</select>
+
+	<select id="list" resultType="com.sxbang.friday.model.Userinformation">
+		select * from userinformation t
+		limit #{offset}, #{limit}
+	</select>
+
+	<update id="update">
+		update userinformation t
+		<set>
+			<if test="modified != null">
+				modified = #{modified}, 
+			</if>
+			<if test="username != null">
+				username = #{username}, 
+			</if>
+			<if test="phone != null">
+				phone = #{phone}, 
+			</if>
+			<if test="realname != null">
+				realname = #{realname}, 
+			</if>
+			<if test="clazz != null">
+				clazz = #{clazz}, 
+			</if>
+			<if test="sno != null">
+				sno = #{sno}, 
+			</if>
+			<if test="dormitory != null">
+				dormitory = #{dormitory}, 
+			</if>
+			<if test="gender != null">
+				gender = #{gender}, 
+			</if>
+			<if test="createtime != null">
+				createtime = #{createtime}, 
+			</if>
+			<if test="avatar != null">
+				avatar = #{avatar}, 
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+
+		</set>
+		where t.id = #{id}
+	</update>
+
+</mapper>
