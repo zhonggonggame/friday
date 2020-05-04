@@ -51,6 +51,7 @@ public class ShopcontextController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ApiOperation(value = "修改")
+    @ResponseBody
     public Results  update(Shopcontext shopcontext) {
        return shopcontextService.update(shopcontext);
     }

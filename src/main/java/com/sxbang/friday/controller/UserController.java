@@ -6,20 +6,19 @@ import com.sxbang.friday.base.result.Results;
 import com.sxbang.friday.dto.UserDto;
 import com.sxbang.friday.model.SysUser;
 import com.sxbang.friday.service.UserService;
-import com.sxbang.friday.util.MD5;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 //import org.springframework.security.access.prepost.PreAuthorize;
@@ -141,4 +140,16 @@ public class UserController {
     public Results<SysUser> changePassword(String username, String oldPassword, String newPassword) {
         return userService.changePassword(username, oldPassword, newPassword);
     }
+
+	/**
+	 * 修改用户状态
+	 */
+	@PostMapping("/status")
+	@ResponseBody
+     public Results  changeStatus(Integer id,Integer status){
+        return userService.changeStatus(id,status);
+	 }
+
+
+
 }

@@ -43,4 +43,9 @@ public interface UserDao {
 
 	@Update("update sys_user t set t.password = #{password} where t.id = #{id}")
 	int changePassword(@Param("id") Long id, @Param("password") String password);
+
+
+	@Update("update sys_user t set t.status=#{status} where t.id=#{id}")
+	int changeStatus(@Param("id") Integer id,@Param("status") Integer status);
+
 }

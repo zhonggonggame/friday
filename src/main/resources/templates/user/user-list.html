@@ -85,6 +85,33 @@
                 }
             });
 
+            //监听switch，修改状态
+            form.on('switch(switch)',function (data) {
+                //获取当前行的用户id
+                var id=$(this).attr('uid');
+                var status=data.elem.checked?"1":"0";
+                $.ajax({
+                    url:'/user/status'
+                    ,type:"POST"
+                    ,data:{
+                        id:id,
+                        status:status
+                    }
+                    ,dataType:'json'
+                    ,success : function (data) {
+                        layer.alert("修改成功");
+                        form.render();
+                    }
+                });
+
+            });
+
+
+
+
+
+
+
             //监听工具条
             table.on('tool(member)', function(obj){
                 var data = obj.data;

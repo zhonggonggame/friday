@@ -25,4 +25,6 @@ public interface UserService {
 
     Results changePassword(String username, String oldPassword, String newPassword);
 
+
+    Results changeStatus(Integer id,Integer status);
 }

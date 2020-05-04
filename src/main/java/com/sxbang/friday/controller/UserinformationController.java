@@ -22,6 +22,7 @@ public class UserinformationController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ApiOperation(value = "修改会员信息")
+    @ResponseBody
     public Results  update(Userinformation userinformation) {
        return userinformationService.update(userinformation);
     }
