@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -18,9 +19,10 @@ public class  ShopcontextServiceImpl implements ShopcontextService {
     private ShopcontextDao shopcontextDao;
 
     @Override
-    public Results<Shopcontext> getByPage(Map<String, Object> params,Integer offset, Integer limit) {
-        return new Results(0,"",null,shopcontextDao.count(params), shopcontextDao.list(params,offset, limit));
-
+    public Results getByPage(Map<String, Object> params,Integer offset, Integer limit) {
+        List<Map<String,Object>>  list=shopcontextDao.list(params,offset, limit);
+        list.forEach(map->map.put("modified",map.get("modified").toString().substring(0,19)));
+        return new Results(0,"",null,shopcontextDao.count(params),list);
     }
 
     @Override
@@ -46,10 +48,6 @@ public class  ShopcontextServiceImpl implements ShopcontextService {
         return results;
     }
 
-    @Override
-    public Shopcontext getShopcontextById(Integer id) {
-        return shopcontextDao.getById(id);
-    }
 
     @Override
     @Transactional
@@ -69,6 +67,13 @@ public class  ShopcontextServiceImpl implements ShopcontextService {
         results.setCode(ResponseCode.SUCCESS.getCode());
         results.setMsg(ResponseCode.SUCCESS.getMessage());
         return results;
+    }
+
+    @Override
+    public Results search(Map<String, Object> params, Integer offset, Integer limit) {
+        List<Map<String,Object>> list=shopcontextDao.search(params,offset,limit);
+        list.forEach(map->map.put("modified",map.get("modified").toString().substring(0,19)));
+        return  new Results(0,"",null,shopcontextDao.searchcount(params),list);
     }
 
 }

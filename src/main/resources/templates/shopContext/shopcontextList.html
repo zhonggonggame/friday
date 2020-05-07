@@ -27,7 +27,7 @@
                             <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" name="username"  placeholder="请输入商品名" autocomplete="off" class="layui-input">
+                            <input type="text" name="shopname"  placeholder="请输入商品名" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
                             <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
@@ -45,12 +45,15 @@
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                     </script>
                     <script type="text/html" id="buttonTpl">
-                        {{#  if(d.status == 1){ }}
+                        {{#  if(d.display == 1){ }}
                         <input type="checkbox" uid={{d.id}} name="switch" lay-filter="switch" lay-skin="switch" checked lay-text="启用|禁用">
                         {{#  } else { }}
                         <input type="checkbox" uid={{d.id}} name="switch" lay-filter="switch" lay-skin="switch" lay-text="启用|禁用">
                         {{#  } }}
                     </script>
+                   <!-- <script type="text/html" id="starTpl">
+                        <div id="star" uid={{d.id}} class="star_container"></div>
+                    </script>-->
                 </div>
             </div>
         </div>
@@ -58,13 +61,14 @@
 </div>
 </body>
 <script>
-    layui.use('table', function(){
+    layui.use(['table','rate'], function(){
         var table = layui.table,
             form = layui.form;
+        var rate=layui.rate;
 
         table.render({
             elem: '#table'
-            ,url: '/userinformations/listPage' //数据接口
+            ,url: '/shopcontexts/listPage' //数据接口
             ,page: true //开启分页
             ,response: {
                 countName: 'count', //规定数据总数的字段名称，默认：count
@@ -73,16 +77,25 @@
             , cols: [
                 [ //表头
                     {field : 'id', title : 'ID'},
-                    {field : 'username', title : '昵称'},
-                    {field : 'phone', title : '手机号'},
-                    {field : 'realname', title : '真实姓名'},
-                    {field : 'clazz', title : '学校'},
-                    {field : 'gender', title : '性别'},
-                    {field : 'modified', title : '创建时间'},
-                    {field: 'status', title:'状态', templet: '#buttonTpl', minWidth: 80, align: 'center'},
-                    {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
+                    {field : 'name', title : '商品名称'},
+                    {field : 'context', title : '评论内容'},
+                    {field : 'modified', title : '发布时间'},
+                    {field : 'username', title : '发布者'},
+                    {field: 'display', title:'状态', templet: '#buttonTpl',  align: 'center'},
+                    {field: 'star', title: '星级',
+                    templet: function(d){
+                        return '<div uid="'+d.id +'"id="star'+d.id+'"></div>'}},
+                    {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                 ]
-            ]
+            ],done:function (res) {
+               var datas=res.datas;
+               for (var i in datas){
+                  rate.render({
+                      elem:'#star'+datas[i].id,
+                      value:datas[i].star
+                  });
+               }
+            }
         });
 
         form.on('switch(switch)',function (data) {
@@ -90,11 +103,11 @@
             var id=$(this).attr('uid');
             var status=data.elem.checked?"1":"0";
             $.ajax({
-                url:'/userinformations/edit'
+                url:'/shopcontexts/edit'
                 ,type:"POST"
                 ,data:{
                     id:id,
-                    status:status
+                    display:status
                 }
                 ,dataType:'json'
                 ,success : function (data) {
@@ -102,11 +115,7 @@
                     form.render();
                 }
             });
-
-
-
         });
-
 
         //监听工具条
         table.on('tool(member)', function(obj){
@@ -114,7 +123,7 @@
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     $.ajax({
-                        url:"/userinformations/delete",
+                        url:"/shopcontexts/delete",
                         type:"GET",
                         data:{id:data.id},
                         dataType:'json',
@@ -128,7 +137,7 @@
 
                 });
             } else if(obj.event === 'edit'){
-                xadmin.open('编辑用户信息','/userinformations/edit/?id='+data.id);
+                xadmin.open('编辑用户信息','/shopcontexts/edit/?id='+data.id);
             }
         });
 
@@ -136,28 +145,28 @@
         //搜索
         form.on('submit(search)', function(data){
             var username = data.field.username;
+            var shopname=data.field.shopname;
             table.render({
                 elem: '#table'
-                ,url: '/userinformations/search' //数据接口
+                ,url: '/shopcontexts/search' //数据接口
                 ,page: true //开启分页
                 ,where:{
-                    "username":username
+                    username:username
+                    ,shopname:shopname
                 }
                 ,response: {
-
                     countName: 'count', //规定数据总数的字段名称，默认：count
                     dataName: 'datas' //规定数据列表的字段名称，默认：data
                 }
-                , cols: [
+                ,cols: [
                     [ //表头
                         {field : 'id', title : 'ID'},
-                        {field : 'username', title : '昵称'},
-                        {field : 'phone', title : '手机号'},
-                        {field : 'realname', title : '真实姓名'},
-                        {field : 'clazz', title : '学校'},
-                        {field : 'gender', title : '性别'},
-                        {field : 'modified', title : '创建时间'},
-                        {field: 'status', title:'状态', templet: '#buttonTpl', minWidth: 80, align: 'center'},
+                        {field : 'name', title : '商品名称'},
+                        {field : 'context', title : '评论内容'},
+                        {field : 'modified', title : '发布时间'},
+                        {field : 'username', title : '发布者'},
+                        {field: 'display', title:'状态', templet: '#buttonTpl', minWidth: 80, align: 'center'},
+                        {field: 'star', title:'评分', templet: '#starTpl', minWidth: 80, align: 'center'},
                         {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
                     ]
                 ]

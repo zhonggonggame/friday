@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxbang.friday.dao.OrderformDao">
+
+
+	<sql id="where">
+		<where>
+			 bo.user_id = bu.id
+			AND bo.address_id = ba.id
+			AND bo.id = boi.order_id
+			AND boi.book_id = bb.id
+			<if test="params != null">
+				<if test="params.orderNum!=null and params.orderNum!='' ">
+					and bo.order_num=#{params.orderNum}
+				</if>
+				<if test="params.createDate!=null and params.createDate!=''">
+					and bo.create_date like #{params.createDate}"%"
+				</if>
+				<if test="params.orderStatus!=null and params.orderStatus!=''">
+					and bo.order_status=#{params.orderStatus}
+				</if>
+				<if test="params.status!=null and params.status!=''">
+					and bo.status=#{params.status}
+				</if>
+				<if test="params.receiver!=null and params.receiver!=''">
+					and ba.receiver=#{params.receiver}
+				</if>
+			</if>
+			GROUP BY order_num
+		</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		select count(*) from (SELECT count(*)
+		FROM
+		bs_order bo,
+		bs_user bu,
+		bs_address ba,
+		bs_order_item boi,
+		bs_book bb
+		<include refid="where"></include>) as bt
+	</select>
+
+	<select id="list" resultType="com.sxbang.friday.dto.OrderFormVO">
+		SELECT
+		bo.order_num,
+		bo.order_status,
+		bo.create_date,
+		bo.status,
+		bu.username,
+		bu.phone,
+		ba.province,
+		ba.city,
+		ba.area,
+		ba.detail_address,
+		ba.receiver,
+		sum(bb.new_price) as money
+		FROM
+		bs_order bo,
+		bs_user bu,
+		bs_address ba,
+		bs_order_item boi,
+		bs_book bb
+		<include refid="where"></include>
+		limit #{offset}, #{limit}
+	</select>
+
+  <update id="update" parameterType="com.sxbang.friday.dto.OrderFormVO">
+     update bs_order  bo set bo.status=#{status} where bo.order_num=#{orderNum}
+  </update>
+
+
+
+</mapper>

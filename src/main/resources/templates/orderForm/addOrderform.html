@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+ <title>新增信息</title>
+    <header th:replace="header::html"></header>
+</head>
+<body>
+    <div class="x-body">
+         <form class="layui-form">
+			 <input type="hidden" id="userId" name="id" th:value="${orderform.status}">
+			 <div class="layui-form-item">
+				 <label for="orderNum" class="layui-form-label">
+					 <span class="x-red"></span>订单编号：
+				 </label>
+				 <div class="layui-input-inline">
+					 <input type="text" disabled="disabled" id="orderNum" th:value="${orderform.orderNum}" name="orderNum" required="" lay-verify="" autocomplete="off" class="layui-input">
+				 </div>
+			 </div>
+			 <div class="layui-form-item">
+				 <label for="receiver" class="layui-form-label">
+					 <span class="x-red"></span>收件人：
+				 </label>
+				 <div class="layui-input-inline">
+					 <input type="text" disabled="disabled" id="receiver" th:value="${orderform.receiver}" name="receiver" required="" lay-verify="" autocomplete="off" class="layui-input">
+				 </div>
+			 </div>
+			 <div class="layui-form-item">
+				 <label for="receiver" class="layui-form-label">
+					 <span class="x-red"></span>收货地址：
+				 </label>
+				 <div class="layui-input-inline">
+					 <input type="text" disabled="disabled" id="detailAddress" th:value="${orderform.detailAddress}" name="detailAddress" required="" lay-verify="" autocomplete="off" class="layui-input">
+				 </div>
+			 </div>
+			 <div class="layui-form-item">
+				 <label for="receiver" class="layui-form-label">
+					 <span class="x-red"></span>联系方式：
+				 </label>
+				 <div class="layui-input-inline">
+					 <input type="text" disabled="disabled" id="phone" th:value="${orderform.phone}" name="phone" required="" lay-verify="" autocomplete="off" class="layui-input">
+				 </div>
+			 </div>
+			 <div class="layui-form-item">
+				 <label for="receiver" class="layui-form-label">
+					 <span class="x-red"></span>应付金额：
+				 </label>
+				 <div class="layui-input-inline">
+					 <input type="text"   id="money" th:value="${orderform.money}" name="phone" required="" lay-verify="" autocomplete="off" class="layui-input">
+				 </div>
+			 </div>
+			 <div class="layui-form-item">
+				 <label for="orderStatus" class="layui-form-label">
+					 <span class="x-red"></span>支付状态：
+				 </label>
+				 <div class="layui-input-inline">
+					 <input type="text"  disabled="disabled" id="orderStatus" th:value="${orderform.orderStatus}==1?'未支付':'已支付'" name="orderStatus" required="" lay-verify="" autocomplete="off" class="layui-input">
+				 </div>
+			 </div>
+			 <div class="layui-form-item">
+				 <label  class="layui-form-label">
+					 <span class="x-red"></span>支付状态：
+				 </label>
+				 <div class="layui-input-inline">
+                     <select class="layui-select" name="status" id="status" lay-filter="status" autocomplete="off">
+					 </select>
+				 </div>
+			 </div>
+			 <div class="layui-form-item">
+				 <button  class="layui-btn" lay-filter="edit" lay-submit="">
+					 更新
+				 </button>
+			 </div>
+        </form>
+    </div>
+	<script type="text/javascript">
+		layui.use(['form','layer'], function(){
+                $ = layui.jquery;
+                var form = layui.form
+                ,layer = layui.layer;
+             layer.ready(function () {
+				 if ($('#userId').val()=='1'){
+					 $('#status').html('<option value="1" selected="selected">已确定</option>'+'<option value="-1" >已取消</option>'+'<option value="2">已发货</option>'+'<option value="-2" >未发货</option>');
+				 } else if ($('#userId').val()=='-1'){
+					 $('#status').html('<option value="-1" selected="selected">已取消</option>'+'<option value="1" >已确定</option>'+'<option value="2" >已发货</option>'+'<option value="-2" >未发货</option>');
+				 }else if ($('#userId').val()=='2'){
+					 $('#status').html('<option value="2" selected="selected">已发货</option>'+'<option value="-1" >已取消</option>'+'<option value="1" >已确定</option>'+'<option value="-2" >未发货</option>');
+				 }else if ($('#userId').val()=='-2'){
+					 $('#status').html('<option value="-2" selected="selected">未发货</option>'+'<option value="2">已发货</option>'+'<option value="-1">已取消</option>'+'<option value="1" >已确定</option>');
+				 }
+				 form.render('select');
+			 });
+            //监听提交
+            form.on('submit(edit)', function(data){
+                $.ajax({
+                    url:"/orderforms/edit",
+                    type:"POST",
+                    data:data.field,
+                    dataType:'json',
+                    success:function(result){
+                        if(result.code == 500 || result.code == 5000100 || result.code == 5000101 || result.code == 5000102){
+                            layer.alert(result.msg);
+                        }else{
+                            layer.alert("设置成功", {icon: 6},function () {
+                                xadmin.close();
+                                xadmin.father_reload();
+                            });
+                        }
+                    }
+                });
+                return false;
+             });
+          });
+	</script>
+</body>
+</html>

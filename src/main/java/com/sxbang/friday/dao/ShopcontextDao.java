@@ -25,6 +25,11 @@ public interface ShopcontextDao {
     
     int count(@Param("params") Map<String, Object> params);
 
-    List<Shopcontext> list(@Param("params") Map<String, Object> params, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    int searchcount(@Param("params") Map<String, Object> params);
+
+    List<Map<String,Object>> list(@Param("params") Map<String, Object> params, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
+
+    List<Map<String,Object>> search(@Param("params") Map<String, Object> params, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
 }

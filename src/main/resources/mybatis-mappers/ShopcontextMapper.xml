@@ -34,11 +34,44 @@
 		<include refid="where" />
 	</select>
 
-	<select id="list" resultType="Shopcontext">
-		select * from shopcontext t
+	<select id="list" resultType="java.util.HashMap">
+		select s.id,s.modified,s.display,s.context,u.username,t.name,s.star from shopcontext s
+		LEFT JOIN userinformation u on s.uid=u.id
+		LEFT JOIN shopinformation t ON s.sid=t.id
 		<include refid="where" />
 		limit #{offset}, #{limit}
 	</select>
+
+
+	<select id="searchcount" resultType="int">
+		select count(1) from shopcontext s
+		LEFT JOIN userinformation u on s.uid=u.id
+		LEFT JOIN shopinformation t ON s.sid=t.id
+		where 1=1
+		<if test="params.username !=null and params.username !=''">
+			and u.username=#{params.username}
+		</if>
+		<if test="params.shopname !=null and params.shopname!=''">
+			and t.name=#{params.shopname}
+		</if>
+	</select>
+
+	<select id="search" resultType="java.util.HashMap">
+		select s.id,s.modified,s.display,s.context,u.username,t.name from shopcontext s
+		LEFT JOIN userinformation u on s.uid=u.id
+		LEFT JOIN shopinformation t ON s.sid=t.id
+		where  1=1
+		<if test="params.username !=null and params.username!=''">
+		and u.username=#{params.username}
+		</if>
+		<if test="params.shopname!=null and params.shopname !=''">
+		  and t.name=#{params.shopname}
+		</if>
+		limit #{offset}, #{limit}
+	</select>
+
+
+
 
 	<update id="update">
 		update shopcontext t

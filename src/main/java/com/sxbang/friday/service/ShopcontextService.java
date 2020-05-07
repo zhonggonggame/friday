@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface ShopcontextService {
 
-   Results<Shopcontext>  getByPage(Map<String, Object> params, Integer offset, Integer limit);
+   Results getByPage(Map<String, Object> params, Integer offset, Integer limit);
 
    Results  save(Shopcontext shopcontext);
 
@@ -17,7 +17,7 @@ public interface ShopcontextService {
 
    Results  delete(Shopcontext shopcontext);
 
-   Shopcontext getShopcontextById(Integer id);
+   Results  search(Map<String, Object> params, Integer offset, Integer limit);
 
 }
 
