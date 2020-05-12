@@ -2,7 +2,7 @@
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Friday-System</title>
+    <title>郑州大学二手交易市场后台管理系统</title>
     <header th:replace="header::html"></header>
 </head>
 <body>
@@ -143,36 +143,36 @@
 
 
         //搜索
-        form.on('submit(search)', function(data){
-            var username = data.field.username;
-            var shopname=data.field.shopname;
-            table.render({
-                elem: '#table'
-                ,url: '/shopcontexts/search' //数据接口
-                ,page: true //开启分页
-                ,where:{
-                    username:username
-                    ,shopname:shopname
-                }
-                ,response: {
-                    countName: 'count', //规定数据总数的字段名称，默认：count
-                    dataName: 'datas' //规定数据列表的字段名称，默认：data
-                }
-                ,cols: [
-                    [ //表头
-                        {field : 'id', title : 'ID'},
-                        {field : 'name', title : '商品名称'},
-                        {field : 'context', title : '评论内容'},
-                        {field : 'modified', title : '发布时间'},
-                        {field : 'username', title : '发布者'},
-                        {field: 'display', title:'状态', templet: '#buttonTpl', minWidth: 80, align: 'center'},
-                        {field: 'star', title:'评分', templet: '#starTpl', minWidth: 80, align: 'center'},
-                        {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
-                    ]
+    form.on('submit(search)', function(data){
+        var username = data.field.username;
+        var shopname=data.field.shopname;
+        table.render({
+            elem: '#table'
+            ,url: '/shopcontexts/search' //数据接口
+            ,page: true //开启分页
+            ,where:{
+                username:username
+                ,shopname:shopname
+            }
+            ,response: {
+                countName: 'count', //规定数据总数的字段名称，默认：count
+                dataName: 'datas' //规定数据列表的字段名称，默认：data
+            }
+            ,cols: [
+                [ //表头
+                    {field : 'id', title : 'ID'},
+                    {field : 'name', title : '商品名称'},
+                    {field : 'context', title : '评论内容'},
+                    {field : 'modified', title : '发布时间'},
+                    {field : 'username', title : '发布者'},
+                    {field: 'display', title:'状态', templet: '#buttonTpl', minWidth: 80, align: 'center'},
+                    {field: 'star', title:'评分', templet: '#starTpl', minWidth: 80, align: 'center'},
+                    {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
                 ]
-            });
-            return false;
+            ]
         });
+        return false;
+    });
     });
 </script>
 

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>新增商品信息</title>
+    <header th:replace="header::html"></header>
+    <style type="text/css">
+        .layui-upload-img {
+            width: 92px;
+            height: 92px;
+            margin: 0 10px 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="x-body">
+    <form class="layui-form">
+        <input type="hidden" id="goodsId" name="id" th:value="${bsGoods.id}">
+        <div class="layui-form-item">
+            <label for="L_username" class="layui-form-label">
+                <span class="x-red">*</span>商品名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_username"  name="name"  th:value="${bsGoods.name}" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_oldPrice" class="layui-form-label">
+                <span class="x-red">*</span>商品原价
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_oldPrice" name="oldPrice" th:value="${bsGoods.oldPrice}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_newPrice" class="layui-form-label">
+                <span class="x-red">*</span>商品现价
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_newPrice" name="newPrice"   th:value="${bsGoods.newPrice}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品是否完整</label>
+            <div class="layui-input-block">
+                <input type="radio"  name="suit" value="1" title="是" th:checked="${bsGoods.suit}==1">
+                <input type="radio"  name="suit" value="2" title="否" th:checked="${bsGoods.suit}==2">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_style" class="layui-form-label">
+                <span class="x-red">*</span>商品成色
+            </label>
+            <div class="layui-input-inline">
+                <select name="style" id="L_style" lay-verify="">
+                    <option value="">请选择商品成色</option>
+                    <option value="10" th:selected="${bsGoods.style}=='10'">全新</option>
+                    <option value="9" th:selected="${bsGoods.style}=='9'">90%新</option>
+                    <option value="8" th:selected="${bsGoods.style}=='8'">80%新</option>
+                    <option value="7" th:selected="${bsGoods.style}=='7'">70%新</option>
+                    <option value="6" th:selected="${bsGoods.style}=='6'">60%新</option>
+                    <option value="5" th:selected="${bsGoods.style}=='5'">50%新</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_category" class="layui-form-label">
+                <span class="x-red">*</span>商品类别
+            </label>
+            <div class="layui-input-inline">
+            <select name="category" id="L_category" lay-verify="">
+                <option value="">请选择商品类别</option>
+                <option value="1" th:selected="${bsGoods.category}=='1'">电子用品</option>
+                <option value="2" th:selected="${bsGoods.category}=='2'">生活用品</option>
+                <option value="3" th:selected="${bsGoods.category}=='3'">学习用品</option>
+            </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_info" class="layui-form-label">商品描述</label>
+            <div class="layui-input-inline">
+                <textarea name="info" id="L_info" cols="30"  rows="4"  th:text="${bsGoods.info}" ></textarea>
+            </div>
+        </div>
+        <!--上传图片到本地磁盘-->
+        <input type="hidden" name="imgUrl" class="image" th:value="${bsGoods.imgUrl}">
+        <div class="layui-form-item">
+            <label class="layui-form-label ">照片:</label>
+            <div class="layui-input-inline">
+                <button type="button" class="layui-btn" id="upload">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1" th:src="${'/public/'+bsGoods.imgUrl}">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="add" lay-submit="">
+                发布商品
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+
+    layui.use(['form','layer', 'laydate'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer
+            ,laydate = layui.laydate;
+
+
+
+
+
+
+        //监听提交
+        form.on('submit(add)', function(data){
+            $.ajax({
+                url:"/bsGoodss/add",
+                type:"POST",
+                data:data.field,
+                dataType:'json',
+                success:function(result){
+                    if(result.code == 500 || result.code == 5000100 || result.code == 5000101 || result.code == 5000102){
+                        layer.alert(result.msg);
+                    }else{
+                        layer.alert("设置成功", {icon: 6},function () {
+                            //关闭当前frame
+                            xadmin.close();
+                            // 可以对父窗口进行刷新
+                            xadmin.father_reload();
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#upload'
+            ,url: '/bsGoodss/upload'
+            ,accept:'images'
+            ,size:50000
+            /*图片上传前的回调*/
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    //图片链接（base64）
+                    $('#demo1').attr('src', result);
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #4cae4c;">上传成功</span>');
+
+                var fileupload = $(".image");
+                fileupload.attr("value",res.data.src);
+                console.log(fileupload.attr("value"));
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
+
+    });
+
+
+
+
+</script>
+</body>
+</html>

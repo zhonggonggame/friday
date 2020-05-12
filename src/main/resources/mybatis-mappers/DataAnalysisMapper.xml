@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxbang.friday.dao.DataAnalysisDao">
+
+    <select id="selectAddUserCount"  resultType="java.util.HashMap">
+        select * from addUserCount a where a.id in
+         <foreach item="item" collection="list" open="(" separator="," close=")">
+          #{item}
+         </foreach>
+    </select>
+
+
+    <select id="selectPayAmount"  resultType="java.util.HashMap">
+        select * from payamount p where p.id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+</mapper>    
