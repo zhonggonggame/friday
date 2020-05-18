@@ -15,7 +15,7 @@ public interface UserinformationDao {
      * @param id
      * @return
      */
-    @Select("select * from userinformation t where t.id = #{id}")
+    @Select("select * from bs_user t where t.id = #{id}")
     Userinformation getById(Integer id);
 
     /**
@@ -23,7 +23,7 @@ public interface UserinformationDao {
      * @param userinformation
      * @return
      */
-    @Delete("delete from userinformation where id = #{id}")
+    @Delete("delete from bs_user where id = #{id}")
     int delete(Userinformation userinformation);
 
     /**

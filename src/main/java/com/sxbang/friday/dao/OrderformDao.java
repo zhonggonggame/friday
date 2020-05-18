@@ -33,11 +33,11 @@ public interface OrderformDao {
             "\t\tbs_user bu,\n" +
             "\t\tbs_address ba,\n" +
             "\t\tbs_order_item boi,\n" +
-            "\t\tbs_book bb\n" +
+            "\t\tbs_goods bb\n" +
             "where bo.user_id = bu.id\n" +
             "        AND bo.address_id = ba.id\n" +
             "        AND bo.id = boi.order_id\n" +
-            "        AND boi.book_id = bb.id\n" +
+            "        AND boi.goods_id = bb.id\n" +
             "and bo.order_num=#{id} ")
     OrderFormVO getById(String id);
 

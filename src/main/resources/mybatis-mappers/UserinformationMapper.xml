@@ -45,16 +45,16 @@
 	</sql>
 
 	<select id="count" resultType="int">
-		select count(1) from userinformation t
+		select count(1) from bs_user t
 	</select>
 
 	<select id="list" resultType="com.sxbang.friday.model.Userinformation">
-		select * from userinformation t
+		select * from bs_user t
 		limit #{offset}, #{limit}
 	</select>
 
 	<update id="update">
-		update userinformation t
+		update bs_user t
 		<set>
 			<if test="modified != null">
 				modified = #{modified}, 

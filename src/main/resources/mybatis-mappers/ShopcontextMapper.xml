@@ -36,8 +36,8 @@
 
 	<select id="list" resultType="java.util.HashMap">
 		select s.id,s.modified,s.display,s.context,u.username,t.name,s.star from shopcontext s
-		LEFT JOIN userinformation u on s.uid=u.id
-		LEFT JOIN shopinformation t ON s.sid=t.id
+		LEFT JOIN bs_user u on s.uid=u.id
+		LEFT JOIN bs_goods t ON s.sid=t.id
 		<include refid="where" />
 		limit #{offset}, #{limit}
 	</select>
@@ -45,8 +45,8 @@
 
 	<select id="searchcount" resultType="int">
 		select count(1) from shopcontext s
-		LEFT JOIN userinformation u on s.uid=u.id
-		LEFT JOIN shopinformation t ON s.sid=t.id
+		LEFT JOIN bs_user u on s.uid=u.id
+		LEFT JOIN bs_goods t ON s.sid=t.id
 		where 1=1
 		<if test="params.username !=null and params.username !=''">
 			and u.username=#{params.username}
@@ -58,8 +58,8 @@
 
 	<select id="search" resultType="java.util.HashMap">
 		select s.id,s.modified,s.display,s.context,u.username,t.name from shopcontext s
-		LEFT JOIN userinformation u on s.uid=u.id
-		LEFT JOIN shopinformation t ON s.sid=t.id
+		LEFT JOIN bs_user u on s.uid=u.id
+		LEFT JOIN bs_goods t ON s.sid=t.id
 		where  1=1
 		<if test="params.username !=null and params.username!=''">
 		and u.username=#{params.username}

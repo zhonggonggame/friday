@@ -9,7 +9,7 @@
 			 bo.user_id = bu.id
 			AND bo.address_id = ba.id
 			AND bo.id = boi.order_id
-			AND boi.book_id = bb.id
+			AND boi.goods_id = bb.id
 			<if test="params != null">
 				<if test="params.orderNum!=null and params.orderNum!='' ">
 					and bo.order_num=#{params.orderNum}
@@ -38,7 +38,7 @@
 		bs_user bu,
 		bs_address ba,
 		bs_order_item boi,
-		bs_book bb
+		bs_goods bb
 		<include refid="where"></include>) as bt
 	</select>
 
@@ -61,7 +61,7 @@
 		bs_user bu,
 		bs_address ba,
 		bs_order_item boi,
-		bs_book bb
+		bs_goods bb
 		<include refid="where"></include>
 		limit #{offset}, #{limit}
 	</select>
