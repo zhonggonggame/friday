@@ -165,11 +165,21 @@
                     {field : 'context', title : '评论内容'},
                     {field : 'modified', title : '发布时间'},
                     {field : 'username', title : '发布者'},
-                    {field: 'display', title:'状态', templet: '#buttonTpl', minWidth: 80, align: 'center'},
-                    {field: 'star', title:'评分', templet: '#starTpl', minWidth: 80, align: 'center'},
-                    {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
+                    {field: 'display', title:'状态', templet: '#buttonTpl',  align: 'center'},
+                    {field: 'star', title: '星级',
+                        templet: function(d){
+                            return '<div uid="'+d.id +'"id="star'+d.id+'"></div>'}},
+                    {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                 ]
-            ]
+            ],done:function (res) {
+                var datas=res.datas;
+                for (var i in datas){
+                    rate.render({
+                        elem:'#star'+datas[i].id,
+                        value:datas[i].star
+                    });
+                }
+            }
         });
         return false;
     });

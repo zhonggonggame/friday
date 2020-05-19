@@ -80,13 +80,13 @@
                 ,layer = layui.layer;
              layer.ready(function () {
 				 if ($('#userId').val()=='1'){
-					 $('#status').html('<option value="1" selected="selected">已确定</option>'+'<option value="-1" >已取消</option>'+'<option value="2">已发货</option>'+'<option value="-2" >未发货</option>');
+					 $('#status').html('<option value="1" selected="selected">交易成功</option>'+'<option value="-1" >未处理</option>'+'<option value="2">已发货</option>'+'<option value="-2" >未发货</option>');
 				 } else if ($('#userId').val()=='-1'){
-					 $('#status').html('<option value="-1" selected="selected">已取消</option>'+'<option value="1" >已确定</option>'+'<option value="2" >已发货</option>'+'<option value="-2" >未发货</option>');
+					 $('#status').html('<option value="-1" selected="selected">未处理</option>'+'<option value="1" >交易成功</option>'+'<option value="2" >已发货</option>'+'<option value="-2" >未发货</option>');
 				 }else if ($('#userId').val()=='2'){
-					 $('#status').html('<option value="2" selected="selected">已发货</option>'+'<option value="-1" >已取消</option>'+'<option value="1" >已确定</option>'+'<option value="-2" >未发货</option>');
+					 $('#status').html('<option value="2" selected="selected">已发货</option>'+'<option value="-1" >未处理</option>'+'<option value="1" >交易成功</option>'+'<option value="-2" >未发货</option>');
 				 }else if ($('#userId').val()=='-2'){
-					 $('#status').html('<option value="-2" selected="selected">未发货</option>'+'<option value="2">已发货</option>'+'<option value="-1">已取消</option>'+'<option value="1" >已确定</option>');
+					 $('#status').html('<option value="-2" selected="selected">未发货</option>'+'<option value="2">已发货</option>'+'<option value="-1">未处理</option>'+'<option value="1" >交易成功</option>');
 				 }
 				 form.render('select');
 			 });

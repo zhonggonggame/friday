@@ -42,8 +42,8 @@
                         <div class="layui-inline layui-show-xs-block">
                             <select name="status" id="status" lay-verify="">
                                 <option value="">请选择订单状态</option>
-                                <option value="1">已收货</option>
-                                <option value="-1">未收货</option>
+                                <option value="1">交易成功</option>
+                                <option value="-1">未处理</option>
                                 <option value="2">已发货</option>
                                 <option value="-2">未发货</option>
                             </select>
@@ -100,9 +100,9 @@
                      }},
                  {field : 'status', title : '订单状态',templet:function (d) {
                      if (d.status=='1'){
-                         return "未收货";
+                         return "交易成功";
                      }else if(d.status=='-1'){
-                         return "已收货";
+                         return "未处理";
                      }else if (d.status=='2'){
                          return "已发货"
                      } else if (d.status=='-2'){
@@ -168,13 +168,13 @@
                      {field : 'phone', title : '联系方式'},
                      {field : 'money', title : '应付金额'},
                      {field : 'orderStatus', title : '支付状态',templet:function (d) {
-                             return d.display=='1'?"已支付":"未支付";
+                             return d.orderStatus=='1'?"未支付":"已支付";
                          }},
                      {field : 'status', title : '订单状态',templet:function (d) {
                              if (d.status=='1'){
-                                 return "已确定";
+                                 return "交易成功";
                              }else if(d.status=='-1'){
-                                 return "已取消";
+                                 return "未处理";
                              }else if (d.status=='2'){
                                  return "已发货"
                              } else if (d.status=='-2'){

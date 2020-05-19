@@ -57,7 +57,7 @@
 	</select>
 
 	<select id="search" resultType="java.util.HashMap">
-		select s.id,s.modified,s.display,s.context,u.username,t.name from shopcontext s
+		select s.id,s.star,s.modified,s.display,s.context,u.username,t.name from shopcontext s
 		LEFT JOIN bs_user u on s.uid=u.id
 		LEFT JOIN bs_goods t ON s.sid=t.id
 		where  1=1
